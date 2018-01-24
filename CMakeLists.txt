@@ -100,6 +100,12 @@ if(${FTDI_MPSSE_I2C})
   endif()
 endif()
 
+# ==============================================================================
+# Package
+# ==============================================================================
+
+get_target_property(FTDI_MPSSE_INCLUDE_DIRS ftdi-mpsse INTERFACE_INCLUDE_DIRECTORIES)
+set(FTDI_MPSSE_INCLUDE_DIRS ${FTDI_MPSSE_INCLUDE_DIRS} CACHE INTERNAL "Pretend to have package ftdi-mpsse" FORCE)
 
 # ==============================================================================
 # Samples
