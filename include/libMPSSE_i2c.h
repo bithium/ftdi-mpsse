@@ -89,7 +89,7 @@ typedef signed short  int16;
 typedef signed long long int64;
 
 #ifndef _MSC_VER
-typedef unsigned char	bool;
+#include <stdbool.h>
 #endif
 
 #ifdef __x86_64__  
