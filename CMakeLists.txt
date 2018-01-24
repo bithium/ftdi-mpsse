@@ -31,14 +31,11 @@ option(FTDI_MPSSE_SAMPLES "Build samples." Off)
 
 string(TOLOWER ${CMAKE_SYSTEM_NAME} _system)
 
-include(CheckTypeSize)
-check_type_size (void* VOID_P_SIZE)
-
 set(_i2c_support True)
 
-if(${VOID_P_SIZE} EQUAL 4)
+if(${CMAKE_SIZEOF_VOID_P} EQUAL 4)
    set(_arch "i386")
-elseif(${VOID_P_SIZE} EQUAL 8)
+elseif(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
    if(_system STREQUAL "Windows")
       set(_i2c_support False)
       set(_arch "x64")
