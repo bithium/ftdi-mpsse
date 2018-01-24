@@ -77,11 +77,7 @@ macro(ftdi_library type)
   set_property(TARGET ${_lib_name} PROPERTY IMPORTED_LOCATION ${_lib_file})
 
   add_library(ftdi-mpsse-${type} INTERFACE)
-  target_link_libraries(ftdi-mpsse-${type} INTERFACE ftdi-mpsse ${_lib_name})
-
-  if(UNIX)
-    target_link_libraries(ftdi-mpsse-${type} INTERFACE dl)
-  endif()
+  target_link_libraries(ftdi-mpsse-${type} INTERFACE ftdi-mpsse ${_lib_name} ${CMAKE_DL_LIBS})
 endmacro()
 
 add_library(ftdi-mpsse INTERFACE)
