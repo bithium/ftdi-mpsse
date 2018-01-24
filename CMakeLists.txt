@@ -97,8 +97,28 @@ macro(mpsse_library _type)
   target_link_libraries(ftdi-mpsse-${_type} INTERFACE ftdi-mpsse-${_type}-impl ftdi-mpsse ${CMAKE_DL_LIBS})
 endmacro()
 
+# We always require the shared version of the ftd2xx library.
+set(_ftd2xx_path ${PROJECT_SOURCE_DIR}/lib/ftd2xx/${_system}/${_arch}/)
+set(_ftd2xx_name "${CMAKE_SHARED_LIBRARY_PREFIX}ftd2xx${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(_ftd2xx_major 1)
+set(_ftd2xx_minor 4)
+set(_ftd2xx_patch 6)
+
+set(_ftd2xx_lib    "${_ftd2xx_name}.${_ftd2xx_major}.${_ftd2xx_minor}.${_ftd2xx_patch}")
+set(_ftd2xx_link_1 "${_ftd2xx_name}.${_ftd2xx_major}.${_ftd2xx_minor}")
+set(_ftd2xx_link_2 "${_ftd2xx_name}")
+
+if(UNIX)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${_ftd2xx_lib} ${_ftd2xx_link_1} WORKING_DIRECTORY ${_ftd2xx_path})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${_ftd2xx_lib} ${_ftd2xx_link_2} WORKING_DIRECTORY ${_ftd2xx_path})
+  ftdi_library(ftd2xx SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+else()
+  ftdi_library(ftd2xx SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX} NO_PREFIX)
+endif()
+
 add_library(ftdi-mpsse INTERFACE)
 target_include_directories(ftdi-mpsse INTERFACE include include/${_system})
+target_link_libraries(ftdi-mpsse INTERFACE ftd2xx "-Wl,-rpath=${_ftd2xx_path}")
 
 if(${FTDI_MPSSE_SPI})
   mpsse_library("spi")
