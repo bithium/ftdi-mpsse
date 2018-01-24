@@ -17,7 +17,7 @@ cmake_minimum_required (VERSION 3.5)
 project (ftdi-mpsse C)
 
 # ==============================================================================
-# Configuration
+# Options
 # ==============================================================================
 
 option(FTDI_MPSSE_SHARED "Build with shared library support." On)
